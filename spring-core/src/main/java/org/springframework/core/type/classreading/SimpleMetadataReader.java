@@ -18,8 +18,11 @@ package org.springframework.core.type.classreading;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.asm.ClassReader;
+import org.springframework.asm.decrypt.DecryptClassTool;
 import org.springframework.core.NestedIOException;
 import org.springframework.core.io.Resource;
 import org.springframework.core.type.AnnotationMetadata;
@@ -51,6 +54,13 @@ final class SimpleMetadataReader implements MetadataReader {
 		this.annotationMetadata = visitor.getMetadata();
 	}
 
+	SimpleMetadataReader(Resource resource, @Nullable ClassLoader classLoader, DecryptClassTool decryptClassTool) throws IOException {
+		SimpleAnnotationMetadataReadingVisitor visitor = new SimpleAnnotationMetadataReadingVisitor(classLoader);
+		getClassReader(resource,decryptClassTool).accept(visitor, PARSING_OPTIONS);
+		this.resource = resource;
+		this.annotationMetadata = visitor.getMetadata();
+	}
+
 	private static ClassReader getClassReader(Resource resource) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
 			try {
@@ -63,6 +73,44 @@ final class SimpleMetadataReader implements MetadataReader {
 		}
 	}
 
+	private static final String GroupPath = "cn/tnar/flyos";
+
+	private static final String SKIP_LIB = "cn/tnar/flyos/api";
+
+	private static final List<String> skip = Arrays.asList("ParkingApplication.class", "DeviceApplication.class",
+			"WatchApplication.class", "SyncApplication.class", "AccessPaymentAspect.class", "CashOutAspect.class",
+			"IDelYunParkOutGateCar.class", "DelYunParkOutGateCar.class", "UIController.class", "SendMQ.class",
+			"MockMSGVO.class", "ParkingLotController.class", "MakeupOrderDto.class", "MakeupInLogParamDto.class",
+			"ManualOrderResponse.class", "ManualOrderProcessor.class", "ManualOrderGenerator.class",
+			"AbstractManualOrderGenerator.class", "NoInOrderGenerator.class", "NoPlateOrderGenerator.class",
+			"FuzzyMatchOrderGenerator.class", "CentralPayOrderGenerator.class", "ETCOrderGenerator.class",
+			"FlyParkOrderLogServiceImpl.class", "FlyAccessServiceImpl.class", "GroupCarRecordServiceImpl.class",
+			"ParkSocketClient.class", "HikSendService.class", "FlyHikSendServiceImpl.class",
+			"ParkingRecordServiceImpl.class", "FlyEventLogServiceImpl.class", "RodService.class",
+			"RodServiceImpl.class", "CashierOperatorService.class", "CashierOperatorServiceImpl.class",
+			"ETCUpLoadDataService.class", "ETCUploadDataServiceImpl.class", "DeviceTraceOrderService.class",
+			"DeviceTranceOrderServiceImpl.class", "DeductionRequestVO.class", "DeductionResponseVO.class",
+			"StcbEtcUploadPayment.class", "Rule4InoutPro.class", "RuleInOutMessageVO.class", "GateAccessReceiver.class",
+			"PaymentReceiver.class", "GateGuard.class", "STCloudBoxPayOrder.class", "DeductionRequestVO.class",
+			"DeductionResponseVO.class", "IHotTaskService.class", "HotTaskService.class", "HotTaskPO.class",
+			"CommonController.class", "CashierPermitService.class", "CashierPermitServiceImpl.class",
+			"TCashierPermit.class", "FlySyncGroupCarServiceImpl.class", "CashAndEleIsShowAble.class",
+			"CashAndEleIsShowAbleImpl.class");
+
+	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
+		try (InputStream is = resource.getInputStream()) {
+			try {
+				if(resource.getURL().getPath().contains(GroupPath) && !resource.getURL().getPath().contains(SKIP_LIB) && !skip.contains(resource.getFilename()) ) {
+					return new ClassReader(is,decryptClassTool);
+				}
+				return new ClassReader(is);
+			}
+			catch (IllegalArgumentException ex) {
+				throw new NestedIOException("ASM ClassReader failed to parse class file - " +
+						"probably due to a new Java class file version that isn't supported yet: " + resource, ex);
+			}
+		}
+	}
 
 	@Override
 	public Resource getResource() {

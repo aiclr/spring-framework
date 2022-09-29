@@ -19,6 +19,8 @@ package org.springframework.core.type.classreading;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.springframework.asm.decrypt.DecryptClassTool;
+import org.springframework.asm.decrypt.DecryptClassToolFactory;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -100,7 +102,8 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
 	@Override
 	public MetadataReader getMetadataReader(Resource resource) throws IOException {
-		return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader());
+		DecryptClassTool decryptClassTool = DecryptClassToolFactory.getTool(1, "0123456789abcdef");
+		return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader(),decryptClassTool);
 	}
 
 }

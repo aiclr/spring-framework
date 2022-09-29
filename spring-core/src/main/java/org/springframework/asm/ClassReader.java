@@ -31,6 +31,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.asm.decrypt.DecryptClassTool;
+
 /**
  * A parser to make a {@link ClassVisitor} visit a ClassFile structure, as defined in the Java
  * Virtual Machine Specification (JVMS). This class parses the ClassFile content and calls the
@@ -287,6 +289,10 @@ public class ClassReader {
     this(readStream(inputStream, false));
   }
 
+  public ClassReader(final InputStream inputStream,final DecryptClassTool decryptClassTool ) throws IOException {
+	this(readStreamDES(inputStream,false,decryptClassTool));
+  }
+
   /**
    * Constructs a new {@link ClassReader} object.
    *
@@ -298,6 +304,12 @@ public class ClassReader {
     this(
         readStream(
             ClassLoader.getSystemResourceAsStream(className.replace('.', '/') + ".class"), true));
+  }
+
+  public ClassReader(final String className,final DecryptClassTool decryptClassTool) throws IOException {
+	this(
+	    readStreamDES(
+			ClassLoader.getSystemResourceAsStream(className.replace('.', '/') + ".class"), true,decryptClassTool));
   }
 
   /**
@@ -334,6 +346,44 @@ public class ClassReader {
         inputStream.close();
       }
     }
+  }
+
+  /**
+   * Reads the given input stream and returns its content as a byte array.
+   *
+   * @param inputStream an input stream.
+   * @param close true to close the input stream after reading.
+   * @return the content of the given input stream.
+   * @throws IOException if a problem occurs during reading.
+   */
+  private static byte[] readStreamDES(final InputStream inputStream, final boolean close, final DecryptClassTool decryptClassTool)
+		  throws IOException {
+	  if (inputStream == null) {
+		  throw new IOException("Class not found");
+	  }
+	  int bufferSize = 16;
+	  try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
+		  byte[] data = new byte[bufferSize];
+		  byte[] plaintext = new byte[bufferSize];
+		  int bytesRead;
+		  int readCount = 0;
+		  while ((bytesRead = inputStream.read(data, 0, bufferSize)) != -1) {
+			  decryptClassTool.decode(data, plaintext, bytesRead);
+			  outputStream.write(plaintext, 0, bytesRead);
+			  readCount++;
+		  }
+		  outputStream.flush();
+		  if (readCount == 1) {
+			  // SPRING PATCH: some misbehaving InputStreams return -1 but still write to buffer (gh-27429)
+			  // return data;
+			  // END OF PATCH
+		  }
+		  return outputStream.toByteArray();
+	  } finally {
+		  if (close) {
+			  inputStream.close();
+		  }
+	  }
   }
 
   private static int computeBufferSize(final InputStream inputStream) throws IOException {
