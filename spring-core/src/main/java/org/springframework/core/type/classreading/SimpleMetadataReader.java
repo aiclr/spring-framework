@@ -75,14 +75,12 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	private static final String GroupPath = "cn/tnar/flyos";
 
-	private static final String SKIP_LIB = "cn/tnar/flyos/api";
-
 	private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class", "CashOutAspect.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
 			try {
-				if(resource.getURL().getPath().contains(GroupPath) && !resource.getURL().getPath().contains(SKIP_LIB) && !skip.contains(resource.getFilename()) ) {
+				if(resource.getURL().getPath().contains(GroupPath) && !skip.contains(resource.getFilename()) ) {
 					return new ClassReader(is,decryptClassTool);
 				}
 				return new ClassReader(is);
