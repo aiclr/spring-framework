@@ -93,7 +93,7 @@ jar {
 	}
 }
 
-jar.destinationDir=file("/tmp/spring/")
+jar.destinationDir=file("/build/spring/")
 
 test {
 	// Make sure the classes dir is used on the test classpath (required by ResourceTests).
