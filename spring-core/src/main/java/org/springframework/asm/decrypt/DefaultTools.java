@@ -16,32 +16,37 @@
 
 package org.springframework.asm.decrypt;
 
-public final class DecryptClassToolFactory {
+public final class DefaultTools implements DecryptClassTool {
 
-	/**
-	 * decrypt class type.
-	 */
-	public static int type = 1;
+	private static volatile DefaultTools INSTANCE;
 
-	private DecryptClassToolFactory() {
+	private DefaultTools() {
+
 	}
 
-	public static DecryptClassTool getTool() {
-		if (type == 1) {
-			return DefaultTools.getInstance();
+	public static DefaultTools getInstance() {
+		if (INSTANCE == null) {
+			synchronized (DefaultTools.class) {
+				if (INSTANCE == null) {
+					INSTANCE = new DefaultTools();
+				}
+			}
 		}
-		else {
-			return AESTools.getInstance();
-		}
+		return INSTANCE;
 	}
 
-	public static void init(String password) {
-		if (type == 1) {
-			DefaultTools.getInstance();
+	@Override
+	public byte[] decode(byte[] ciphertext, int bytesRead) {
+		byte[] plaintext = new byte[bytesRead];
+		for (int i = 0; i < bytesRead; i++) {
+			plaintext[i] = (byte) (ciphertext[i] ^ 1);
 		}
-		else {
-			AESTools.getInstance(password);
-		}
+		return plaintext;
+	}
+
+	@Override
+	public byte[] encode(byte[] plaintext, int bytesRead) {
+		return decode(plaintext, bytesRead);
 	}
 
 }

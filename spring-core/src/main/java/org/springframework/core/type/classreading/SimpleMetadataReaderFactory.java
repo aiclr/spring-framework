@@ -21,6 +21,7 @@ import java.io.IOException;
 
 import org.springframework.asm.decrypt.DecryptClassTool;
 import org.springframework.asm.decrypt.DecryptClassToolFactory;
+import org.springframework.asm.decrypt.VerifyPermissions;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -102,8 +103,20 @@ public class SimpleMetadataReaderFactory implements MetadataReaderFactory {
 
 	@Override
 	public MetadataReader getMetadataReader(Resource resource) throws IOException {
-		DecryptClassTool decryptClassTool = DecryptClassToolFactory.getTool(1, "0123456789abcdef");
-		return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader(),decryptClassTool);
+		String password = System.getProperty("password");
+		if(password!=null && !"".equals(password)){
+			if (VerifyPermissions.needCheck && VerifyPermissions.checkPassword(password)) {
+				// set decrypt tool
+				DecryptClassToolFactory.type = Integer.parseInt(System.getProperty("decrypt"));
+				// Get password from the command line to decrypt class file
+				DecryptClassToolFactory.init(password);
+				// just check once
+				VerifyPermissions.needCheck=false;
+			}
+			DecryptClassTool decryptClassTool = DecryptClassToolFactory.getTool();
+			return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader(),decryptClassTool);
+		}
+		return new SimpleMetadataReader(resource, this.resourceLoader.getClassLoader());
 	}
 
 }

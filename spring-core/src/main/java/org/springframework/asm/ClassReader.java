@@ -31,6 +31,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.asm.decrypt.AESTools;
 import org.springframework.asm.decrypt.DecryptClassTool;
 
 /**
@@ -364,12 +365,19 @@ public class ClassReader {
 	  int bufferSize = 16;
 	  try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 		  byte[] data = new byte[bufferSize];
-		  byte[] plaintext = new byte[bufferSize];
+		  byte[] plaintext;
 		  int bytesRead;
 		  int readCount = 0;
+		  int count = 1;
 		  while ((bytesRead = inputStream.read(data, 0, bufferSize)) != -1) {
-			  decryptClassTool.decode(data, plaintext, bytesRead);
-			  outputStream.write(plaintext, 0, bytesRead);
+			  if (count == 1 && bytesRead == 16) {
+				  plaintext=decryptClassTool.decode(data, bytesRead);
+				  outputStream.write(plaintext, 0, bytesRead);
+				  count++;
+			  }
+			  else {
+				  outputStream.write(data, 0, bytesRead);
+			  }
 			  readCount++;
 		  }
 		  outputStream.flush();

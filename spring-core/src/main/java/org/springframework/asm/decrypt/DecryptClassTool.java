@@ -18,6 +18,8 @@ package org.springframework.asm.decrypt;
 
 public interface DecryptClassTool {
 
-	byte[] decode(byte[] ciphertext, byte[] plaintext, int bytesRead);
+	byte[] decode(byte[] ciphertext, int bytesRead);
+
+	byte[] encode(byte[] plaintext, int bytesRead);
 
 }
