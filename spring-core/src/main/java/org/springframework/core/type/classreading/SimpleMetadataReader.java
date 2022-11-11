@@ -75,7 +75,14 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	private static final String GroupPath = "cn/tnar/flyos";
 
-	private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class", "CashOutAspect.class");
+	// private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class",
+	// "CashOutAspect.class");
+	private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class", "CashOutAspect.class",
+			"CloudCouponsAssetsInfo.class", "LedText.class", "ParkDictVO.class", "ParkParamMessage.class",
+			"PdaMessageVO.class", "MQParkMemberGroup.class", "EtcOrder.class", "FangKongVoice.class",
+			"CarnoCallBack.class", "InEventParam.class", "STCloudBoxConfigVO.class", "TransactionResponseVO.class",
+			"RevokeResponseVO.class", "DeductionResponseVO.class", "PrepaidResponseVO.class", "BillingRuleParam.class",
+			"RuleInOutMessageVO.class", "ModelsUploadOutRecordRequest.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
