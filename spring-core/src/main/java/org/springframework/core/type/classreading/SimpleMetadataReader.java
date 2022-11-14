@@ -86,7 +86,7 @@ final class SimpleMetadataReader implements MetadataReader {
 			"CloudParkCarInfo.class", "CloudParkPublicLedInfoData.class", "CloudParkGateInfoData.class",
 			"CloudParkZoneInfoData.class", "SyncGroupCarInfo.class", "GroupMothCarRecord.class", "CloudBlack.class",
 			"CloudTagCar.class", "CloudParkOperaterInfo.class", "CloudParkFeeIndex.class", "CloudElecCouponsInfo.class",
-			"CloudElecCouponsTopark.class", "CalendarDto.class");
+			"CloudElecCouponsTopark.class", "CalendarDto.class", "CtrlOfNuPO.class", "TCashierPermit.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
