@@ -86,7 +86,16 @@ final class SimpleMetadataReader implements MetadataReader {
 			"CloudParkCarInfo.class", "CloudParkPublicLedInfoData.class", "CloudParkGateInfoData.class",
 			"CloudParkZoneInfoData.class", "SyncGroupCarInfo.class", "GroupMothCarRecord.class", "CloudBlack.class",
 			"CloudTagCar.class", "CloudParkOperaterInfo.class", "CloudParkFeeIndex.class", "CloudElecCouponsInfo.class",
-			"CloudElecCouponsTopark.class", "CalendarDto.class", "CtrlOfNuPO.class", "TCashierPermit.class");
+			"CalculateOrderDto.class", "B0.class", "B1.class", "B2.class", "B4class", "B5.class", "BA.class",
+			"BB.class", "C0.class", "C1.class", "C6.class", "ShouquanShenqing.class", "XLTRequestBuiltInTemplate.class",
+			"FuzzyMatchVO.class", "ParkFeeInfoStruct.class", "TollReportStatisticsVO.class", "TCashierOperatorVO.class",
+			"BillingInfo.class", "Payment.class", "ChargeReleaseDto.class", "CalculateOrderDto.class",
+			"ModelsUploadOutRecordRequest.class", "MinWangParkDeviceConfig.class", "ParkOrder.class",
+			"BillingRule.class", "Order.class", "GateAccessRequest.class", "PrepaidVo.class",
+			"TransactionRequestVO.class", "RevokeRequestVO.class", "DeductionRequestVO.class", "PayVO.class",
+			"GroupMemberParkingTime.class", "OrderPayResponse.class", "OrderPayRequest.class",
+			"XLTBuiltInTemplate.class", "CloudElecCouponsTopark.class", "CalendarDto.class", "CtrlOfNuPO.class",
+			"TCashierPermit.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
