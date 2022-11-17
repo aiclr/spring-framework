@@ -75,8 +75,6 @@ final class SimpleMetadataReader implements MetadataReader {
 
 	private static final String GroupPath = "cn/tnar/flyos";
 
-	// private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class",
-	// "CashOutAspect.class");
 	private static final List<String> skip = Arrays.asList("AccessPaymentAspect.class", "CashOutAspect.class",
 			"CloudCouponsAssetsInfo.class", "LedText.class", "ParkDictVO.class", "ParkParamMessage.class",
 			"PdaMessageVO.class", "MQParkMemberGroup.class", "EtcOrder.class", "FangKongVoice.class",
@@ -89,7 +87,7 @@ final class SimpleMetadataReader implements MetadataReader {
 			"CalculateOrderDto.class", "B0.class", "B1.class", "B2.class", "B4class", "B5.class", "BA.class",
 			"BB.class", "C0.class", "C1.class", "C6.class", "ShouquanShenqing.class", "XLTRequestBuiltInTemplate.class",
 			"FuzzyMatchVO.class", "ParkFeeInfoStruct.class", "TollReportStatisticsVO.class", "TCashierOperatorVO.class",
-			"BillingInfo.class", "Payment.class", "ChargeReleaseDto.class", "CalculateOrderDto.class",
+			"BillingInfo.class", "Payment.class", "ChargeReleaseDto.class", "ManualOrderType.class",
 			"ModelsUploadOutRecordRequest.class", "MinWangParkDeviceConfig.class", "ParkOrder.class",
 			"BillingRule.class", "Order.class", "GateAccessRequest.class", "PrepaidVo.class",
 			"TransactionRequestVO.class", "RevokeRequestVO.class", "DeductionRequestVO.class", "PayVO.class",
@@ -100,7 +98,7 @@ final class SimpleMetadataReader implements MetadataReader {
 			"STCloudBoxPayOrder.class", "ETCPayOrder.class", "PlatformPaidPayOrder.class", "InnerPaidPayOrder.class",
 			"CouponPayOrder.class", "TimesCardPayOrder.class", "PrepaidOrder.class", "JustOutPayOrder.class",
 			"EPayPayOrder.class", "CouponPayOrderProxy.class", "ChangXingPayOrder4WeChat.class",
-			"StcbEtcUploadPayment.class");
+			"StcbEtcUploadPayment.class","MakeupInLogDto.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
