@@ -98,7 +98,8 @@ final class SimpleMetadataReader implements MetadataReader {
 			"STCloudBoxPayOrder.class", "ETCPayOrder.class", "PlatformPaidPayOrder.class", "InnerPaidPayOrder.class",
 			"CouponPayOrder.class", "TimesCardPayOrder.class", "PrepaidOrder.class", "JustOutPayOrder.class",
 			"EPayPayOrder.class", "CouponPayOrderProxy.class", "ChangXingPayOrder4WeChat.class",
-			"StcbEtcUploadPayment.class", "MakeupInLogDto.class", "CostUsedDetail.class", "PermitEnum.class");
+			"StcbEtcUploadPayment.class", "MakeupInLogDto.class", "CostUsedDetail.class", "PermitEnum.class",
+			"SuzhouPayMessage.class", "SuzhouInAndOutMessage.class");
 
 	private static ClassReader getClassReader(Resource resource, DecryptClassTool decryptClassTool) throws IOException {
 		try (InputStream is = resource.getInputStream()) {
